@@ -1,0 +1,15 @@
+D:\Faculdade\4º periodo\desktop\projeto1\ProjetoEntregar1\bin\Debug\net6.0\ProjetoEntregar1.exe
+D:\Faculdade\4º periodo\desktop\projeto1\ProjetoEntregar1\bin\Debug\net6.0\ProjetoEntregar1.deps.json
+D:\Faculdade\4º periodo\desktop\projeto1\ProjetoEntregar1\bin\Debug\net6.0\ProjetoEntregar1.runtimeconfig.json
+D:\Faculdade\4º periodo\desktop\projeto1\ProjetoEntregar1\bin\Debug\net6.0\ProjetoEntregar1.dll
+D:\Faculdade\4º periodo\desktop\projeto1\ProjetoEntregar1\bin\Debug\net6.0\ProjetoEntregar1.pdb
+D:\Faculdade\4º periodo\desktop\projeto1\ProjetoEntregar1\obj\Debug\net6.0\ProjetoEntregar1.csproj.AssemblyReference.cache
+D:\Faculdade\4º periodo\desktop\projeto1\ProjetoEntregar1\obj\Debug\net6.0\ProjetoEntregar1.GeneratedMSBuildEditorConfig.editorconfig
+D:\Faculdade\4º periodo\desktop\projeto1\ProjetoEntregar1\obj\Debug\net6.0\ProjetoEntregar1.AssemblyInfoInputs.cache
+D:\Faculdade\4º periodo\desktop\projeto1\ProjetoEntregar1\obj\Debug\net6.0\ProjetoEntregar1.AssemblyInfo.cs
+D:\Faculdade\4º periodo\desktop\projeto1\ProjetoEntregar1\obj\Debug\net6.0\ProjetoEntregar1.csproj.CoreCompileInputs.cache
+D:\Faculdade\4º periodo\desktop\projeto1\ProjetoEntregar1\obj\Debug\net6.0\ProjetoEntregar1.dll
+D:\Faculdade\4º periodo\desktop\projeto1\ProjetoEntregar1\obj\Debug\net6.0\refint\ProjetoEntregar1.dll
+D:\Faculdade\4º periodo\desktop\projeto1\ProjetoEntregar1\obj\Debug\net6.0\ProjetoEntregar1.pdb
+D:\Faculdade\4º periodo\desktop\projeto1\ProjetoEntregar1\obj\Debug\net6.0\ProjetoEntregar1.genruntimeconfig.cache
+D:\Faculdade\4º periodo\desktop\projeto1\ProjetoEntregar1\obj\Debug\net6.0\ref\ProjetoEntregar1.dll
