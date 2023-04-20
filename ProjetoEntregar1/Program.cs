@@ -4,101 +4,137 @@ namespace ProjetoEntregar1
 {
     class Program
     {
+        static List<Documento> documentos = new List<Documento>();
+
         static void Main(string[] args)
         {
-            Menu();
-        }
+            Console.WriteLine("Bem-vindo ao cadastro de documentos!");
 
-        public static void Menu()
-        {
-            ConsoleKey opcaoSelecionada;
-
-            do
+            while (true)
             {
-                Console.Clear();
-                Console.WriteLine("Sistema de Quinta");
-                Console.WriteLine("=================================");
-                Console.WriteLine("");
-                Console.WriteLine("F1 - Cadastrar documentos");
-                Console.WriteLine("F2 - Pesquisar documentos");
-                Console.WriteLine("F3 - Listar documentos");
-                Console.WriteLine("");
-                Console.WriteLine("F7 - Carregar documentos");
-                Console.WriteLine("F8 - Salvar documentos");
-                Console.WriteLine("");
-                Console.WriteLine("F9 - Sair");
+                Console.WriteLine("\nEscolha uma opção:");
+                Console.WriteLine("1 - Cadastrar documento");
+                Console.WriteLine("2 - Listar documentos");
+                Console.WriteLine("3 - Pesquisar documento");
+                Console.WriteLine("4 - Salvar documentos em arquivo");
+                Console.WriteLine("0 - Sair");
 
-                opcaoSelecionada = Console.ReadKey(true).Key;
+                int opcao = int.Parse(Console.ReadLine());
 
-                switch (opcaoSelecionada)
+                switch (opcao)
                 {
-                    case ConsoleKey.F1:
-                        CadastroDoc();
-                        Console.ReadKey(true);
+                    case 1:
+                        CadastrarDocumento();
                         break;
-                    case ConsoleKey.F2:
-                        Console.WriteLine("F2");
+
+                    case 2:
+                        ListarDocumentos();
                         break;
-                    case ConsoleKey.F3:
-                        Console.WriteLine("F3");
+
+                    case 3:
+                        PesquisarDocumento();
                         break;
-                    case ConsoleKey.F7:
-                        // Executar a opção 7
+
+                    case 4:
+                        SalvarDocumentosEmArquivo();
                         break;
-                    case ConsoleKey.F8:
-                        // Executar a opção 8
-                        break;
-                    case ConsoleKey.F9:
-                        // Executar a opção 9
-                        break;
+
+                    case 0:
+                        Console.WriteLine("Saindo...");
+                        return;
+
                     default:
-                        Console.WriteLine("Opção inválida. Pressione qualquer tecla para continuar.");
-                        Console.ReadKey(true);
+                        Console.WriteLine("Opção inválida!");
                         break;
                 }
-            } while (opcaoSelecionada != ConsoleKey.F9);
+            }
         }
 
-        public static void CadastroDoc()
+        static void CadastrarDocumento()
         {
-            Console.Clear();
-            Console.WriteLine("Sistema de Quinta");
-            Console.WriteLine("=================================");
-            Console.WriteLine("");
-            Console.WriteLine("Registro....  de  <N>");
-            Console.WriteLine("");
-            Console.WriteLine("Nome........:");
-            Console.WriteLine("RG..........:");
-            Console.WriteLine("CPF.........:");
-            Console.WriteLine("Habilitação.:");
-            Console.WriteLine("Tit.Eleitor.:");
+            Console.WriteLine("\nCadastro de documento:");
 
-
-
-
-            // Lê a entrada do usuário para o campo "Nome"
+            Console.Write("Nome: ");
             string nome = Console.ReadLine();
 
-            // Move o cursor para a próxima linha antes de imprimir o próximo campo
-            Console.CursorTop++;
+            Console.Write("RG: ");
+            string rg = Console.ReadLine();
 
-            Console.CursorTop++;
-
+            Console.Write("CPF: ");
             string cpf = Console.ReadLine();
-            Console.CursorTop++;
 
+            Console.Write("Habilitação: ");
             string habilitacao = Console.ReadLine();
-            Console.CursorTop++;
 
+            Console.Write("Título de eleitor: ");
             string tituloEleitor = Console.ReadLine();
-            Console.CursorTop++;
 
-            Console.WriteLine("");
-            Console.WriteLine("<F1> Insere novo <F2> Anterior <F3> Próximo <F5> Editar <F9> Sair");
+            documentos.Add(new Documento(nome, rg, cpf, habilitacao, tituloEleitor));
+
+            Console.WriteLine("Documento cadastrado com sucesso!");
         }
 
+        static void ListarDocumentos()
+        {
+            Console.WriteLine("\nLista de documentos:");
 
+            foreach (Documento documento in documentos)
+            {
+                Console.WriteLine(documento);
+            }
+        }
+
+        static void PesquisarDocumento()
+        {
+            Console.WriteLine("\nPesquisa de documento:");
+
+            Console.Write("Digite o CPF do documento a ser pesquisado: ");
+            string cpf = Console.ReadLine();
+
+            Documento documentoEncontrado = documentos.Find(d => d.CPF == cpf);
+
+            if (documentoEncontrado != null)
+            {
+                Console.WriteLine(documentoEncontrado);
+            }
+            else
+            {
+                Console.WriteLine("Documento não encontrado!");
+            }
+        }
+
+        static void SalvarDocumentosEmArquivo()
+        {
+            Console.WriteLine("\nSalvando documentos em arquivo...");
+
+            using (StreamWriter sw = new StreamWriter("documentos.txt"))
+            {
+                foreach (Documento documento in documentos)
+                {
+                    sw.WriteLine($"{documento.Nome},{documento.RG},{documento.CPF},{documento.Habilitacao},{documento.TituloEleitor}");
+                }
+            }
+
+            Console.WriteLine("Documentos salvos com sucesso!");
+        }
     }
-    
+
+    class Documento
+    {
+        public string Nome { get; set; }
+        public string RG { get; set; }
+        public string CPF { get; set; }
+        public string Habilitacao { get; set; }
+        public string TituloEleitor { get; set; }
+
+        public Documento(string nome, string rg, string cpf, string habilitacao, string tituloEleitor)
+        {
+            Nome = nome;
+            RG = rg;
+            CPF = cpf;
+            Habilitacao = habilitacao;
+            TituloEleitor = tituloEleitor;
+        }
+    }
 
 }
