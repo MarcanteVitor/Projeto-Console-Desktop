@@ -1,57 +1,159 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Intrinsics.X86;
 
 namespace ProjetoEntregar1
 {
     class Program
     {
         static List<Documento> documentos = new List<Documento>();
+        public static int larguraTela = Console.WindowWidth;
+        public  static int meioLinha = (larguraTela / 2);
 
         static void Main(string[] args)
         {
-            Console.WriteLine("Bem-vindo ao cadastro de documentos!");
-
             while (true)
             {
-                Console.WriteLine("\nEscolha uma opção:");
-                Console.WriteLine("1 - Cadastrar documento");
-                Console.WriteLine("2 - Listar documentos");
-                Console.WriteLine("3 - Pesquisar documento");
-                Console.WriteLine("4 - Salvar documentos em arquivo");
-                Console.WriteLine("0 - Sair");
-
-                int opcao = int.Parse(Console.ReadLine());
-
-                switch (opcao)
-                {
-                    case 1:
-                        CadastrarDocumento();
-                        break;
-
-                    case 2:
-                        ListarDocumentos();
-                        break;
-
-                    case 3:
-                        PesquisarDocumento();
-                        break;
-
-                    case 4:
-                        SalvarDocumentosEmArquivo();
-                        break;
-
-                    case 0:
-                        Console.WriteLine("Saindo...");
-                        return;
-
-                    default:
-                        Console.WriteLine("Opção inválida!");
-                        break;
-                }
+                mainMenu();
             }
+        }
+
+        static void mainMenu()
+        {
+            headerMenu();
+            ConsoleKey opcaoSelecionadaMain;
+            Console.WriteLine("\nEscolha uma opção:");
+            Console.WriteLine("F1 - Cadastrar documento");
+            Console.WriteLine("F2 - Pesquisar documento");
+            Console.WriteLine("F3 - Listar documentos");
+
+            Console.WriteLine("F7 - Carregar Documentos");
+            Console.WriteLine("F8 - Salvar documentos em arquivo");
+            Console.WriteLine("F9 - Sair");
+
+            opcaoSelecionadaMain = Console.ReadKey(true).Key;
+            switch (opcaoSelecionadaMain)
+            {
+                case ConsoleKey.F1:
+                    Console.Clear();
+                    CadastrarDocumento();
+                    Console.Clear();
+                    mainMenu();
+                    break;
+                case ConsoleKey.F2:
+                    Console.Clear();
+                    PesquisarDocumento();
+                    break;
+                case ConsoleKey.F3:
+                    Console.Clear();
+                    ListarDocumentos();
+                    break;
+                case ConsoleKey.F7:
+                    Console.Clear();
+                    SalvarDocumentosEmArquivo();
+                    break;
+                case ConsoleKey.F8:
+                    Console.Clear();
+                    Console.WriteLine("Saindo...");
+                    break;
+                case ConsoleKey.F9:
+                    closeMenu();
+                    break;
+                default:
+                    Console.Clear();
+                    Console.WriteLine("Opção inválida!\n\n");
+                    break;
+            }
+        }
+
+        static void headerMenu()
+        {
+            Console.Write("SisQuinta");
+            Console.SetCursorPosition(meioLinha - 12, Console.CursorTop);
+            Console.Write("Cadastro de documentos");
+
+            DateTime dataAtual = DateTime.Now;
+            Console.SetCursorPosition(larguraTela - 11, Console.CursorTop);
+            Console.WriteLine(dataAtual.ToString("dd/MM/yyyy"));
+            escreveEqualLine();
+
+        }
+
+
+        static void footerMenu()
+        {
+            escreveEqualLine();
+            Console.WriteLine("Usuario: User1");
+            Console.SetCursorPosition(meioLinha - 12, 27);
+            Console.Write("Terminal: Terminal da Piazada");
+            Console.SetCursorPosition(larguraTela - 12, 27);
+            Console.WriteLine("Nivel: user");
+            Console.WriteLine(" Msg/opção: ");           
+        }
+
+        static void footerOptions()
+        {
+            ConsoleKey opcaoSelecionadaFooter;
+            Console.SetCursorPosition(0, 25);
+            Console.WriteLine("<F4> Menu Inicial      <F9> Sair");
+            opcaoSelecionadaFooter = Console.ReadKey(true).Key;
+            switch (opcaoSelecionadaFooter)
+            {
+                case ConsoleKey.F4:
+                    Console.Clear();
+                    Console.WriteLine("Saindo...");
+                    break;
+                case ConsoleKey.F9:
+                    closeMenu();
+                    break;
+                default:
+                    Console.WriteLine("Opção inválida!");
+                    break;
+            }
+            
+        }
+
+        static void closeMenu()
+        {
+            Console.WriteLine("\n Deseja finalizar o sistema ?");
+            Console.WriteLine("<S> - Sim");
+            Console.WriteLine("<N> - Não");
+
+            ConsoleKey opcaoSelecionadaClose;
+            opcaoSelecionadaClose = Console.ReadKey(true).Key;
+            switch (opcaoSelecionadaClose)
+            {
+                case ConsoleKey.S:
+                    Environment.Exit(0);
+                    break;
+                case ConsoleKey.N:
+                    mainMenu();
+                    break;
+                default:
+                    mainMenu();
+                    break;
+            }
+
+        }
+
+        static void escreveEqualLine()
+        {
+            string textoIgualLine = "";
+
+            for (int i = 0; i < larguraTela; i++)
+            {
+                textoIgualLine += "=";
+
+            }
+            Console.Write(textoIgualLine);
+
         }
 
         static void CadastrarDocumento()
         {
+            headerMenu();
             Console.WriteLine("\nCadastro de documento:");
 
             Console.Write("Nome: ");
@@ -72,20 +174,30 @@ namespace ProjetoEntregar1
             documentos.Add(new Documento(nome, rg, cpf, habilitacao, tituloEleitor));
 
             Console.WriteLine("Documento cadastrado com sucesso!");
+            footerOptions();
+            footerMenu();
         }
 
         static void ListarDocumentos()
         {
-            Console.WriteLine("\nLista de documentos:");
-
-            foreach (Documento documento in documentos)
+            if (documentos.Count == 0)
             {
-                Console.WriteLine(documento);
+                Console.WriteLine("A lista de documentos está vazia :(");
             }
+            else
+            {
+                Console.WriteLine("\nLista de documentos:");
+                foreach (Documento documento in documentos)
+                {
+                    Console.WriteLine(documento.ToString());
+                }
+            }
+
         }
 
         static void PesquisarDocumento()
         {
+            Console.Clear();
             Console.WriteLine("\nPesquisa de documento:");
 
             Console.Write("Digite o CPF do documento a ser pesquisado: ");
@@ -116,8 +228,13 @@ namespace ProjetoEntregar1
             }
 
             Console.WriteLine("Documentos salvos com sucesso!");
+
+            footerMenu();
         }
+
     }
+
+
 
     class Documento
     {
@@ -134,7 +251,14 @@ namespace ProjetoEntregar1
             CPF = cpf;
             Habilitacao = habilitacao;
             TituloEleitor = tituloEleitor;
+
+
         }
+        public override string ToString()
+        {
+            return $"Nome: {Nome}, RG: {RG}, CPF: {CPF}, Habilitação: {Habilitacao},Titulo de Eleitor: {TituloEleitor}";
+        }
+
     }
 
 }
