@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Intrinsics.X86;
+using System.Reflection;
+using System.Drawing;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace ProjetoEntregar1
 {
@@ -10,7 +13,7 @@ namespace ProjetoEntregar1
     {
         static List<Documento> documentos = new List<Documento>();
         public static int larguraTela = Console.WindowWidth;
-        public  static int meioLinha = (larguraTela / 2);
+        public static int meioLinha = (larguraTela / 2);
 
         static void Main(string[] args)
         {
@@ -40,7 +43,6 @@ namespace ProjetoEntregar1
                     Console.Clear();
                     CadastrarDocumento();
                     Console.Clear();
-                    mainMenu();
                     break;
                 case ConsoleKey.F2:
                     Console.Clear();
@@ -52,13 +54,14 @@ namespace ProjetoEntregar1
                     break;
                 case ConsoleKey.F7:
                     Console.Clear();
-                    SalvarDocumentosEmArquivo();
+                    LerArquivoDat();
                     break;
                 case ConsoleKey.F8:
                     Console.Clear();
-                    Console.WriteLine("Saindo...");
+                    SalvarDocumentosEmArquivo(documentos, "teste.dat");
                     break;
                 case ConsoleKey.F9:
+                    Console.WriteLine("Saindo...");
                     closeMenu();
                     break;
                 default:
@@ -86,26 +89,45 @@ namespace ProjetoEntregar1
         {
             escreveEqualLine();
             Console.WriteLine("Usuario: User1");
-            Console.SetCursorPosition(meioLinha - 12, 27);
-            Console.Write("Terminal: Terminal da Piazada");
-            Console.SetCursorPosition(larguraTela - 12, 27);
-            Console.WriteLine("Nivel: user");
-            Console.WriteLine(" Msg/opção: ");           
+            Console.WriteLine("Terminal: Terminal da Piazada");
+            Console.WriteLine("Nivel: user");        
         }
 
         static void footerOptions()
         {
             ConsoleKey opcaoSelecionadaFooter;
-            Console.SetCursorPosition(0, 25);
-            Console.WriteLine("<F4> Menu Inicial      <F9> Sair");
+            Console.WriteLine("\n\n<F1> Novo Documento <F2>Pesquisar documento <F3> Listar documento ");
+            Console.WriteLine("<F4> Menu Inicial <F7> Carregar Arquivo <F8> Salvar Arquivo <F9> Sair");
+            Console.WriteLine(" Msg/opção: ");
             opcaoSelecionadaFooter = Console.ReadKey(true).Key;
+            Console.Clear();
             switch (opcaoSelecionadaFooter)
             {
+                case ConsoleKey.F1:
+                    Console.Clear();
+                    CadastrarDocumento();
+                    break;
+                case ConsoleKey.F2:
+                    Console.Clear();
+                    PesquisarDocumento();
+                    break;
+                case ConsoleKey.F3:
+                    Console.Clear();
+                    ListarDocumentos();
+                    break;
                 case ConsoleKey.F4:
                     Console.Clear();
                     Console.WriteLine("Saindo...");
                     break;
+                case ConsoleKey.F7:
+                    LerArquivoDat();
+                    Console.Clear();
+                    break;
+                case ConsoleKey.F8:
+                    SalvarDocumentosEmArquivo(documentos, "teste.dat");
+                    break;
                 case ConsoleKey.F9:
+                    Console.WriteLine("Saindo...");
                     closeMenu();
                     break;
                 default:
@@ -153,6 +175,7 @@ namespace ProjetoEntregar1
 
         static void CadastrarDocumento()
         {
+            Console.Clear();
             headerMenu();
             Console.WriteLine("\nCadastro de documento:");
 
@@ -174,33 +197,44 @@ namespace ProjetoEntregar1
             documentos.Add(new Documento(nome, rg, cpf, habilitacao, tituloEleitor));
 
             Console.WriteLine("Documento cadastrado com sucesso!");
-            footerOptions();
+
+            Console.SetCursorPosition(0, 25);
             footerMenu();
+            footerOptions();
         }
 
         static void ListarDocumentos()
         {
+            Console.Clear();
+            headerMenu();
             if (documentos.Count == 0)
             {
-                Console.WriteLine("A lista de documentos está vazia :(");
+                Console.WriteLine("\n\nA lista de documentos está vazia :(");
             }
             else
             {
-                Console.WriteLine("\nLista de documentos:");
+                Console.WriteLine("\nLista de documentos:\n");
+                int index = 0;
                 foreach (Documento documento in documentos)
                 {
+                    Console.WriteLine("Documento: [" + index + "]\n");
                     Console.WriteLine(documento.ToString());
+                    index = index + 1;
                 }
             }
+            //Console.SetCursorPosition(0, 10);
+            footerMenu();
+            footerOptions();
 
         }
 
         static void PesquisarDocumento()
         {
             Console.Clear();
-            Console.WriteLine("\nPesquisa de documento:");
+            headerMenu();
+            Console.WriteLine("\n\nPesquisa de documento:");
 
-            Console.Write("Digite o CPF do documento a ser pesquisado: ");
+            Console.Write("\nDigite o CPF do documento a ser pesquisado: ");
             string cpf = Console.ReadLine();
 
             Documento documentoEncontrado = documentos.Find(d => d.CPF == cpf);
@@ -211,25 +245,70 @@ namespace ProjetoEntregar1
             }
             else
             {
-                Console.WriteLine("Documento não encontrado!");
+                Console.WriteLine("\nDocumento não encontrado!");
             }
+            Console.SetCursorPosition(0, 25);
+            footerMenu();
+            footerOptions();
         }
 
-        static void SalvarDocumentosEmArquivo()
+        /*static void SalvarDocumentosEmArquivo()
         {
+            Console.Clear();
             Console.WriteLine("\nSalvando documentos em arquivo...");
 
-            using (StreamWriter sw = new StreamWriter("documentos.txt"))
+            using (StreamWriter sw = new StreamWriter("C:\\Users\\Vitor Marcante\\Desktop\\Nova pasta (2)\\texto.dat"))
             {
                 foreach (Documento documento in documentos)
                 {
-                    sw.WriteLine($"{documento.Nome},{documento.RG},{documento.CPF},{documento.Habilitacao},{documento.TituloEleitor}");
+                    sw.WriteLine($"Nome: {documento.Nome}, \nRG: {documento.RG}, \nCPF: {documento.CPF}, \nHabilitação: {documento.Habilitacao},\nTitulo de Eleitor: {documento.TituloEleitor}");
                 }
             }
-
+            Console.Clear();
             Console.WriteLine("Documentos salvos com sucesso!");
+        }*/
 
-            footerMenu();
+        public static void SalvarDocumentosEmArquivo(List<Documento> documentos, string nomeDoArquivo)
+        {
+            
+
+            using (StreamWriter writer = File.CreateText(nomeDoArquivo))
+            {
+                foreach (Documento documento in documentos)
+                {
+                    writer.Write(documento.Nome + ",");
+                    writer.Write(documento.RG + ",");
+                    writer.Write(documento.CPF + ",");
+                    writer.Write(documento.Habilitacao + ",");
+                    writer.WriteLine(documento.TituloEleitor);
+                }
+            }
+            Console.WriteLine("Documentos salvos com sucesso");
+
+        }
+
+        public static List<Documento> LerArquivoDat()
+        {
+
+            List<Documento> documentos = new List<Documento>();
+
+            string nomeDoArquivo = @"..\teste.dat";
+            char[] arr = { ',' };
+            try
+            {
+                var linhas = File.ReadAllLines(nomeDoArquivo);
+                string[] dados = linhas.Split(arr);
+            }
+            catch (FileNotFoundException)
+            {
+                Console.WriteLine("Arquivo não encontrado: ");
+            }
+            catch (IOException)
+            {
+                Console.WriteLine("Erro de E/S ao ler o arquivo: ");
+            }
+
+            return documentos;
         }
 
     }
@@ -256,9 +335,9 @@ namespace ProjetoEntregar1
         }
         public override string ToString()
         {
-            return $"Nome: {Nome}, RG: {RG}, CPF: {CPF}, Habilitação: {Habilitacao},Titulo de Eleitor: {TituloEleitor}";
+            return $"Nome: {Nome}, \nRG: {RG}, \nCPF: {CPF}, \nHabilitação: {Habilitacao},\nTitulo de Eleitor: {TituloEleitor}";
         }
-
+      
     }
 
 }
